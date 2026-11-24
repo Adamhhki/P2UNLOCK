@@ -39,7 +39,7 @@ jobs:
           $dumpbin = & $vswhere -latest -products '*' -find 'VC\Tools\MSVC\**\bin\Hostx64\x64\dumpbin.exe' |
             Select-Object -First 1
           if (-not $dumpbin -or -not (Test-Path $dumpbin)) { throw "dumpbin.exe unavailable" }
-          $pe = & $dumpbin /headers $exe
+          $pe = (& $dumpbin /headers $exe) -join "`n"
           if ($pe -notmatch "machine \(x64\)") { throw "PSeriesService.exe is not x64" }
       - name: Install WiX 6.0.1
         shell: pwsh
