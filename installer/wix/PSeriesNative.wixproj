@@ -5,7 +5,4 @@
     <Platform>x64</Platform>
     <DefineConstants>PSeriesServiceExe=$(PSeriesServiceExe)</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="PSeriesNative.wxs" />
-  </ItemGroup>
 </Project>
