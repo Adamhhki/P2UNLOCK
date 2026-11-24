@@ -12,17 +12,21 @@
 
 #include <cstdint>
 #include <memory>
+#include <string>
 
 namespace pseries::platform {
 
 class SeavoBackend final {
 public:
-    [[nodiscard]] static Result<std::unique_ptr<SeavoBackend>> open();
+    [[nodiscard]] static Result<std::unique_ptr<SeavoBackend>> load(
+        const std::wstring& driver_path);
 
     SeavoBackend(const SeavoBackend&) = delete;
     SeavoBackend& operator=(const SeavoBackend&) = delete;
 
     ~SeavoBackend();
+
+    [[nodiscard]] Result<void> close();
 
     [[nodiscard]] Result<std::uint32_t> read_physical(
         std::uint64_t address,
@@ -34,9 +38,11 @@ public:
         std::uint32_t value) const;
 
 private:
-    explicit SeavoBackend(HANDLE device) noexcept;
+    SeavoBackend(HANDLE device, SC_HANDLE manager, SC_HANDLE service) noexcept;
 
     HANDLE device_{INVALID_HANDLE_VALUE};
+    SC_HANDLE manager_{};
+    SC_HANDLE service_{};
 };
 
 } // namespace pseries::platform
