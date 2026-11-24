@@ -35,5 +35,12 @@ if(BUILD_TESTING)
 endif()
 
 if(WIN32)
+    add_library(pserieswindows STATIC platform/windows/seavo_backend.cpp)
+    target_include_directories(pserieswindows PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_link_libraries(pserieswindows PRIVATE pseriescore)
+    if(MSVC)
+        target_compile_options(pserieswindows PRIVATE /W4 /permissive-)
+    endif()
+
     add_subdirectory(apps/service)
 endif()

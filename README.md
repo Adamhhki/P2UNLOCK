@@ -34,9 +34,11 @@ unsigned.
 
 ## Safety scope
 
-No original executable, script, or driver is used. The current core includes a
-tested PCIe target planner, automatic selection among known P-series PCI IDs,
-and read-only AutoPEG profile-candidate checks. It has no hardware enumerator or
-access backend. A profile candidate is not write eligibility: live layout,
-width-map, device-health, and recovery checks are not yet connected. No PCIe
-writes, GPU resets, VBIOS changes, or firmware operations are performed.
+The original executable and scripts are not used. The Windows source now has an
+optional Seavo device-interface adapter for an already-loaded external driver;
+it does not load or redistribute that driver. The adapter is not yet connected
+to the service or an unlock engine. The portable core includes a tested PCIe
+target planner, P-series selection, and read-only AutoPEG profile-candidate
+checks. Hardware discovery, live layout and width-map validation, device-health
+checks, transaction recovery, and CUDA verification are not integrated. No
+hardware writes are performed.

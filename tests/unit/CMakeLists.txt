@@ -25,3 +25,7 @@ add_test(NAME test_device_selection COMMAND test_device_selection)
 add_executable(test_auto_peg_support test_auto_peg_support.cpp)
 target_link_libraries(test_auto_peg_support PRIVATE pseriescore)
 add_test(NAME test_auto_peg_support COMMAND test_auto_peg_support)
+
+add_executable(test_seavo_protocol test_seavo_protocol.cpp)
+target_link_libraries(test_seavo_protocol PRIVATE pseriescore)
+add_test(NAME test_seavo_protocol COMMAND test_seavo_protocol)
