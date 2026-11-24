@@ -13,3 +13,11 @@ add_test(NAME test_recovery COMMAND test_recovery)
 add_executable(test_logging test_logging.cpp)
 target_link_libraries(test_logging PRIVATE pseriescore)
 add_test(NAME test_logging COMMAND test_logging)
+
+add_executable(test_link_policy test_link_policy.cpp)
+target_link_libraries(test_link_policy PRIVATE pseriescore)
+add_test(NAME test_link_policy COMMAND test_link_policy)
+
+add_executable(test_device_selection test_device_selection.cpp)
+target_link_libraries(test_device_selection PRIVATE pseriescore)
+add_test(NAME test_device_selection COMMAND test_device_selection)

@@ -13,6 +13,8 @@ add_library(pseriescore
     src/core/configuration.cpp
     src/core/recovery.cpp
     src/core/logging.cpp
+    src/core/link_policy.cpp
+    src/core/device_selection.cpp
 )
 
 target_include_directories(pseriescore
@@ -33,6 +35,4 @@ endif()
 
 if(WIN32)
     add_subdirectory(apps/service)
-    set(PSeriesServiceExe "$<TARGET_FILE:PSeriesService>" CACHE STRING "PSeriesService executable path")
-    add_subdirectory(installer/wix)
 endif()

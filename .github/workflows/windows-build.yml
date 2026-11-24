@@ -41,24 +41,6 @@ jobs:
           if (-not $dumpbin -or -not (Test-Path $dumpbin)) { throw "dumpbin.exe unavailable" }
           $pe = (& $dumpbin /headers $exe) -join "`n"
           if ($pe -notmatch "machine \(x64\)") { throw "PSeriesService.exe is not x64" }
-      - name: Install WiX 6.0.1
-        shell: pwsh
-        run: dotnet tool install --global wix --version 6.0.1
-      - name: Build MSI
-        shell: pwsh
-        run: |
-          cmake --build build/windows-msvc-x64 --config Release --target PSeriesNativeMSI
-          $msi = Get-ChildItem -Path build/windows-msvc-x64 -Filter *.msi -Recurse |
-            Sort-Object LastWriteTime -Descending |
-            Select-Object -First 1
-          if (-not $msi) { throw "PSeriesNative MSI was not produced" }
-          "PSeriesMSI=$($msi.FullName)" >> $env:GITHUB_ENV
-      - name: Verify MSI
-        shell: pwsh
-        run: |
-          if (-not $env:PSeriesMSI) { throw "PSeriesMSI environment value missing" }
-          $bytes = (Get-Item $env:PSeriesMSI).Length
-          if ($bytes -le 0) { throw "MSI is empty" }
       - name: Prepare downloadable build
         shell: pwsh
         run: |
@@ -67,10 +49,8 @@ jobs:
           $exe = "build/windows-msvc-x64/apps/service/Release/PSeriesService.exe"
           if (-not (Test-Path $exe)) { throw "Release service executable not found: $exe" }
           Copy-Item -LiteralPath $exe -Destination (Join-Path $artifactDir "PSeriesService.exe")
-          $msiDestination = Join-Path $artifactDir "PSeriesNative-x64.msi"
-          Copy-Item -LiteralPath $env:PSeriesMSI -Destination $msiDestination
-          $hash = (Get-FileHash -LiteralPath $msiDestination -Algorithm SHA256).Hash
-          "$hash  PSeriesNative-x64.msi" | Set-Content -Path (Join-Path $artifactDir "SHA256SUMS.txt")
+          $hash = (Get-FileHash -LiteralPath (Join-Path $artifactDir "PSeriesService.exe") -Algorithm SHA256).Hash
+          "$hash  PSeriesService.exe" | Set-Content -Path (Join-Path $artifactDir "SHA256SUMS.txt")
       - name: Upload artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -78,8 +58,3 @@ jobs:
           path: build/release-artifacts/*
           if-no-files-found: error
           retention-days: 14
-      - name: Run MSI lifecycle integration test
-        shell: pwsh
-        run: |
-          powershell -NoProfile -ExecutionPolicy Bypass `
-            -File tests/integration/Test-MsiLifecycle.ps1 -MsiPath "$env:PSeriesMSI"

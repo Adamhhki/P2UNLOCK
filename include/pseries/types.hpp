@@ -34,6 +34,12 @@ enum class LinkGeneration : std::uint8_t {
     gen5,
 };
 
+enum class LinkTrainingState : std::uint8_t {
+    unknown,
+    training,
+    stable,
+};
+
 struct LinkWidth {
     std::uint8_t lanes{};
 };
@@ -43,6 +49,7 @@ struct PcieLinkInformation {
     LinkWidth negotiated_width{};
     std::optional<LinkGeneration> maximum_generation;
     std::optional<LinkWidth> maximum_width;
+    LinkTrainingState training_state{LinkTrainingState::unknown};
 };
 
 enum class ErrorCode {

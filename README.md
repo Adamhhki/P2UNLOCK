@@ -2,7 +2,7 @@
 
 # PSeries Native
 
-PSeries Native is an independent C++20 foundation for a Windows background service and conventional MSI installer.
+PSeries Native is an independent C++20 foundation for a Windows background service. The planned user-facing installer is a small native setup executable; no MSI or GUI installer is currently built.
 
 ## Linux portable build
 
@@ -28,9 +28,14 @@ ctest --test-dir build/windows-msvc-x64 -C Debug --output-on-failure
 The `Windows native build` workflow runs on pushes and pull requests. To start it
 manually, open **Actions → Windows native build → Run workflow** on GitHub.
 After a successful run, download the `PSeriesNative-windows-x64` artifact from
-the run summary. It contains the MSI installer, service executable, and MSI
-SHA-256 checksum. The current development build is unsigned.
+the run summary. It contains `PSeriesService.exe` and its SHA-256 checksum. This
+is the service binary, not a setup installer. The current development build is
+unsigned.
 
 ## Safety scope
 
-No original executable, script, driver, hardware operation, PCIe write, GPU reset, VBIOS change, or firmware operation is part of the current implementation.
+No original executable, script, or driver is used. The current core includes a
+tested PCIe target planner and automatic selection among known P-series PCI IDs,
+but has no hardware enumerator or access backend. Device identification does not
+establish that a hardware modification method is supported. No PCIe writes, GPU
+resets, VBIOS changes, or firmware operations are performed.
