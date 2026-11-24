@@ -16,6 +16,7 @@ add_library(pseriescore
     src/core/link_policy.cpp
     src/core/device_selection.cpp
     src/core/auto_peg_support.cpp
+    src/core/pci_identity.cpp
 )
 
 target_include_directories(pseriescore
@@ -35,12 +36,16 @@ if(BUILD_TESTING)
 endif()
 
 if(WIN32)
-    add_library(pserieswindows STATIC platform/windows/seavo_backend.cpp)
-    target_include_directories(pserieswindows PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-    target_link_libraries(pserieswindows PRIVATE pseriescore bcrypt advapi32)
+    add_library(pserieswindows STATIC
+        platform/windows/seavo_backend.cpp
+        platform/windows/pci_discovery.cpp
+    )
+    target_include_directories(pserieswindows PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_link_libraries(pserieswindows PRIVATE pseriescore bcrypt advapi32 setupapi)
     if(MSVC)
         target_compile_options(pserieswindows PRIVATE /W4 /permissive-)
     endif()
 
+    add_subdirectory(apps/cli)
     add_subdirectory(apps/service)
 endif()

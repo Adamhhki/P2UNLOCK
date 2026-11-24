@@ -26,31 +26,54 @@ jobs:
       - name: Run tests
         shell: pwsh
         run: ctest --test-dir build/windows-msvc-x64 -C Debug --output-on-failure
-      - name: Verify service executable
+      - name: Verify native executables
         shell: pwsh
         run: |
-          $exe = "build/windows-msvc-x64/apps/service/Release/PSeriesService.exe"
-          if (-not (Test-Path $exe)) {
-            $exe = "build/windows-msvc-x64/apps/service/Debug/PSeriesService.exe"
+          $service = "build/windows-msvc-x64/apps/service/Release/PSeriesService.exe"
+          if (-not (Test-Path $service)) {
+            $service = "build/windows-msvc-x64/apps/service/Debug/PSeriesService.exe"
           }
-          if (-not (Test-Path $exe)) { throw "PSeriesService.exe was not produced" }
-          if (-not ((Get-Item $exe).Length -gt 0)) { throw "PSeriesService.exe is empty" }
+          $cli = "build/windows-msvc-x64/apps/cli/Release/PSeriesUnlockNative.exe"
+          if (-not (Test-Path $cli)) {
+            $cli = "build/windows-msvc-x64/apps/cli/Debug/PSeriesUnlockNative.exe"
+          }
+          if (-not (Test-Path $service)) { throw "PSeriesService.exe was not produced" }
+          if (-not (Test-Path $cli)) { throw "PSeriesUnlockNative.exe was not produced" }
+          if (-not ((Get-Item $service).Length -gt 0)) { throw "PSeriesService.exe is empty" }
+          if (-not ((Get-Item $cli).Length -gt 0)) { throw "PSeriesUnlockNative.exe is empty" }
           $vswhere = Join-Path ${env:ProgramFiles(x86)} "Microsoft Visual Studio\Installer\vswhere.exe"
           $dumpbin = & $vswhere -latest -products '*' -find 'VC\Tools\MSVC\**\bin\Hostx64\x64\dumpbin.exe' |
             Select-Object -First 1
           if (-not $dumpbin -or -not (Test-Path $dumpbin)) { throw "dumpbin.exe unavailable" }
-          $pe = (& $dumpbin /headers $exe) -join "`n"
-          if ($pe -notmatch "machine \(x64\)") { throw "PSeriesService.exe is not x64" }
+          foreach ($exe in @($service, $cli)) {
+            $pe = (& $dumpbin /headers $exe) -join "`n"
+            if ($pe -notmatch "machine \(x64\)") { throw "$exe is not x64" }
+          }
+      - name: Run read-only PCI inventory
+        shell: pwsh
+        run: |
+          $cli = "build/windows-msvc-x64/apps/cli/Release/PSeriesUnlockNative.exe"
+          if (-not (Test-Path $cli)) {
+            $cli = "build/windows-msvc-x64/apps/cli/Debug/PSeriesUnlockNative.exe"
+          }
+          & $cli list
+          if ($LASTEXITCODE -ne 0) { throw "Read-only PCI inventory failed: $LASTEXITCODE" }
       - name: Prepare downloadable build
         shell: pwsh
         run: |
           $artifactDir = Join-Path $env:GITHUB_WORKSPACE "build\release-artifacts"
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
-          $exe = "build/windows-msvc-x64/apps/service/Release/PSeriesService.exe"
-          if (-not (Test-Path $exe)) { throw "Release service executable not found: $exe" }
-          Copy-Item -LiteralPath $exe -Destination (Join-Path $artifactDir "PSeriesService.exe")
-          $hash = (Get-FileHash -LiteralPath (Join-Path $artifactDir "PSeriesService.exe") -Algorithm SHA256).Hash
-          "$hash  PSeriesService.exe" | Set-Content -Path (Join-Path $artifactDir "SHA256SUMS.txt")
+          $service = "build/windows-msvc-x64/apps/service/Release/PSeriesService.exe"
+          $cli = "build/windows-msvc-x64/apps/cli/Release/PSeriesUnlockNative.exe"
+          if (-not (Test-Path $service)) { throw "Release PSeriesService.exe not found" }
+          if (-not (Test-Path $cli)) { throw "Release PSeriesUnlockNative.exe not found" }
+          Copy-Item -LiteralPath $service -Destination (Join-Path $artifactDir "PSeriesService.exe")
+          Copy-Item -LiteralPath $cli -Destination (Join-Path $artifactDir "PSeriesUnlockNative.exe")
+          $hashes = foreach ($name in @("PSeriesService.exe", "PSeriesUnlockNative.exe")) {
+            $hash = (Get-FileHash -LiteralPath (Join-Path $artifactDir $name) -Algorithm SHA256).Hash
+            "$hash  $name"
+          }
+          $hashes | Set-Content -Path (Join-Path $artifactDir "SHA256SUMS.txt")
       - name: Upload artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

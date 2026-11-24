@@ -29,3 +29,7 @@ add_test(NAME test_auto_peg_support COMMAND test_auto_peg_support)
 add_executable(test_seavo_protocol test_seavo_protocol.cpp)
 target_link_libraries(test_seavo_protocol PRIVATE pseriescore)
 add_test(NAME test_seavo_protocol COMMAND test_seavo_protocol)
+
+add_executable(test_pci_identity test_pci_identity.cpp)
+target_link_libraries(test_pci_identity PRIVATE pseriescore)
+add_test(NAME test_pci_identity COMMAND test_pci_identity)
