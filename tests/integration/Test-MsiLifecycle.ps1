@@ -20,6 +20,26 @@ function Invoke-Msi {
     }
 }
 
+function Wait-ForServiceStatus {
+    param(
+        [string]$Name,
+        [System.ServiceProcess.ServiceControllerStatus]$Status,
+        [int]$TimeoutSeconds = 30
+    )
+
+    $deadline = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds)
+    do {
+        $service = Get-Service -Name $Name -ErrorAction Stop
+        if ($service.Status -eq $Status) {
+            return
+        }
+        Start-Sleep -Milliseconds 500
+    } while ([DateTime]::UtcNow -lt $deadline)
+
+    $service = Get-Service -Name $Name -ErrorAction Stop
+    throw "Service '$Name' did not reach '$Status' within $TimeoutSeconds seconds; current status is '$($service.Status)'"
+}
+
 try {
     Write-Host 'Fresh installation'
     Invoke-Msi ''
@@ -33,11 +53,12 @@ try {
     if ($service.StartType -ne 'Automatic') {
         throw "Expected Automatic startup; found $($service.StartType)"
     }
+    Wait-ForServiceStatus -Name $serviceName -Status Running
 
     Stop-Service -Name $serviceName -Force -ErrorAction Stop
-    Wait-Service -Name $serviceName -Status Stopped -Timeout 30
+    Wait-ForServiceStatus -Name $serviceName -Status Stopped
     Start-Service -Name $serviceName -ErrorAction Stop
-    Wait-Service -Name $serviceName -Status Running -Timeout 30
+    Wait-ForServiceStatus -Name $serviceName -Status Running
 
     Write-Host 'Repair'
     $repairLog = Join-Path $logRoot 'repair.log'
@@ -68,9 +89,9 @@ try {
     }
 }
 finally {
-    try {
-        if (Get-Service -Name $serviceName -ErrorAction SilentlyContinue) {
-            Stop-Service -Name $serviceName -Force -ErrorAction SilentlyContinue
-        }
-    } catch {}
+    $service = Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+    if ($service -and $service.Status -ne 'Stopped') {
+        Stop-Service -Name $serviceName -Force -ErrorAction Stop
+        Wait-ForServiceStatus -Name $serviceName -Status Stopped
+    }
 }
