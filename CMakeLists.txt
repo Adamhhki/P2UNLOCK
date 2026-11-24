@@ -15,6 +15,7 @@ add_library(pseriescore
     src/core/logging.cpp
     src/core/link_policy.cpp
     src/core/device_selection.cpp
+    src/core/auto_peg_support.cpp
 )
 
 target_include_directories(pseriescore

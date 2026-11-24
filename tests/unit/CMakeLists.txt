@@ -21,3 +21,7 @@ add_test(NAME test_link_policy COMMAND test_link_policy)
 add_executable(test_device_selection test_device_selection.cpp)
 target_link_libraries(test_device_selection PRIVATE pseriescore)
 add_test(NAME test_device_selection COMMAND test_device_selection)
+
+add_executable(test_auto_peg_support test_auto_peg_support.cpp)
+target_link_libraries(test_auto_peg_support PRIVATE pseriescore)
+add_test(NAME test_auto_peg_support COMMAND test_auto_peg_support)

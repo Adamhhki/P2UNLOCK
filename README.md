@@ -35,7 +35,8 @@ unsigned.
 ## Safety scope
 
 No original executable, script, or driver is used. The current core includes a
-tested PCIe target planner and automatic selection among known P-series PCI IDs,
-but has no hardware enumerator or access backend. Device identification does not
-establish that a hardware modification method is supported. No PCIe writes, GPU
-resets, VBIOS changes, or firmware operations are performed.
+tested PCIe target planner, automatic selection among known P-series PCI IDs,
+and read-only AutoPEG profile-candidate checks. It has no hardware enumerator or
+access backend. A profile candidate is not write eligibility: live layout,
+width-map, device-health, and recovery checks are not yet connected. No PCIe
+writes, GPU resets, VBIOS changes, or firmware operations are performed.
