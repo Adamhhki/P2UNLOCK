@@ -1,0 +1,13 @@
+command,dispatcher_address,evidence_address,classification,confidence,status
+help,140044680,140082af0,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+driver-diagnose,140044680,1400830e0,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+self-test,140044680,140083160,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+list,140044680,1400831b0,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+bandwidth,140044680,140083240,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+status,140044680,1400832c8,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+unlock,140044680,1400832d8,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+recover,140044680,1400832e8,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+widen,140044680,1400832f8,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+gen2,140044680,140083308,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+verify,140044680,140083318,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending
+collect-peg,140044680,140083328,CONFIRMED-STATIC,HIGH,String xref mapped to dispatcher; internal handler pending

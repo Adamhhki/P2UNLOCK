@@ -1,0 +1,13 @@
+<Project Sdk="WixToolset.Sdk/6.0.1">
+  <PropertyGroup>
+    <TargetName>PSeriesNative</TargetName>
+    <OutputType>Package</OutputType>
+    <Platform>x64</Platform>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="PSeriesNative.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <DefineConstants>PSeriesServiceExe=$(PSeriesServiceExe)</DefineConstants>
+  </ItemGroup>
+</Project>

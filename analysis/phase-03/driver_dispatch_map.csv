@@ -1,0 +1,4 @@
+driver,sha256,entry_address,dispatch_address,major_function,ioctl,classification,confidence,limitation
+BS_RCIO64.sys,d205286bffdf09bc033c09e95c519c1c267b40c2ee8bab703c6a2d86741ccd3e,0001715c,UNKNOWN,UNKNOWN,UNKNOWN,CONFIRMED-METADATA,MEDIUM,Dispatch analysis incomplete
+SvIoCtrlx64.sys,9ade632e54c3f5e8c75eaf636f2910bad3a8a07d6f078e48c9641d3af1fe811c,00015064,UNKNOWN,UNKNOWN,UNKNOWN,CONFIRMED-METADATA,MEDIUM,Dispatch analysis incomplete
+mydrivers.sys,a2e11d0eec70bf0818aeef0a9676cc4157bb34e06fbe54631eb98b51fc8d92c8,00015064,UNKNOWN,UNKNOWN,UNKNOWN,CONFIRMED-METADATA,MEDIUM,Dispatch analysis incomplete

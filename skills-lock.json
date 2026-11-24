@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "skills": {
+    "binary-triage": {
+      "source": "cyberkaida/reverse-engineering-assistant",
+      "commit": "4bfae31a758639cab4d80704bc8884b508beacac",
+      "sourceType": "github",
+      "skillPath": "ReVa/skills/binary-triage/SKILL.md",
+      "computedHash": "95fa0fcdd39c90a7bf96e94faa4a1c9c31820148dcab9a369f2af1805479b19e",
+      "installMode": "copy"
+    },
+    "cmake": {
+      "source": "mohitmishra786/low-level-dev-skills",
+      "commit": "18f29518a47fda070e6ec1268cb577692fae9a10",
+      "sourceType": "github",
+      "skillPath": "skills/build-systems/cmake/SKILL.md",
+      "computedHash": "73b0f1e334e5e5d5cb50460fa71e35e6029fab5f56a4a91b83a5d0af597d7a52",
+      "installMode": "copy"
+    },
+    "documentation-writer": {
+      "source": "github/awesome-copilot",
+      "commit": "f10fdb8b2660ce85c98f220b2f1ca24653768a5c",
+      "sourceType": "github",
+      "skillPath": "skills/documentation-writer/SKILL.md",
+      "computedHash": "b2de0a266264b7a994d9bf1b771d3b35ab3780d16ccd658ffceb2936d3df1db6",
+      "installMode": "copy"
+    },
+    "property-based-testing": {
+      "source": "trailofbits/skills",
+      "commit": "149d7b21f4067765b82e67029730b42d228ef4b4",
+      "sourceType": "github",
+      "skillPath": "plugins/property-based-testing/skills/property-based-testing/SKILL.md",
+      "computedHash": "1fadba845ba4a8f8916bb58f5b61dda6142780851ffb6a5a5ff82574b7798bfa",
+      "installMode": "copy"
+    }
+  }
+}
