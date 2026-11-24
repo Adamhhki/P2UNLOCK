@@ -3,11 +3,9 @@
     <TargetName>PSeriesNative</TargetName>
     <OutputType>Package</OutputType>
     <Platform>x64</Platform>
+    <DefineConstants>PSeriesServiceExe=$(PSeriesServiceExe)</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="PSeriesNative.wxs" />
-  </ItemGroup>
-  <ItemGroup>
-    <DefineConstants>PSeriesServiceExe=$(PSeriesServiceExe)</DefineConstants>
   </ItemGroup>
 </Project>
